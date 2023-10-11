@@ -1,6 +1,6 @@
 {
   "name": "fastify-graylog-reporter",
-  "version": "0.01",
+  "version": "0.0.1",
   "description": "Fastify plugin for report request data to Graylog",
   "homepage": "https://github.com/Blynskyniki/fastify-graylog-reporter#readme",
   "main": "./dist/index.js",
