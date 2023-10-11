@@ -1,0 +1,36 @@
+# Hidden folders
+.idea
+.vscode
+
+# Backup files
+*~
+
+# Logs
+*.log
+
+
+# Node.js
+node_modules/
+
+# Test coverage
+coverage/
+
+*.tgz
+
+# Yarn - package manager
+yarn.lock
+
+# PNPM - package manager
+shrinkwrap.yaml
+
+# Project sources
+src
+img
+.github
+.eslintrc.js
+tsconfig.json
+examples
+.releaserc
+.releaserc.json
+lefthook.yml
+commitlint.config.js
