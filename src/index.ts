@@ -19,7 +19,6 @@ const plugin: FastifyPluginCallback<{ facility: string; host: string; port?: num
     instance.sendMessage(
       GelfMessage.fromJSON(
         facility,
-
         payload,
       ),
     );
