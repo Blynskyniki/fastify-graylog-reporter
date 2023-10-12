@@ -23,6 +23,9 @@ export class UdpTransport extends TransportAbstract {
           console.error(err);
           reject(err);
         }
+        if (!!this.options.logs) {
+          console.info(`${this.options.host}:${this.options.port} -> ${this.options.facility}`);
+        }
         resolve();
 
       });

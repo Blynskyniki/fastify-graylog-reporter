@@ -9,6 +9,7 @@ export type ConnectionOptions = {
   facility: string;
   host: string;
   port: number;
+  logs?: boolean;
   compress: boolean;
   minCompressSize: number;
   maxChunkSize: number;
@@ -45,6 +46,7 @@ export class GrayLogGelfReporter {
   async report(data: GrayLogReportMessage) {
     const { short_message, full_message, timestamp, host, ...other_fields } = data;
     const chunks = await this.serializer.serialize(Buffer.from(JSON.stringify({
+      'version': '1.1',
       facility: this.options.facility, short_message, full_message, timestamp, host,
       ...this.changeOtherFieldsFormat(other_fields),
     }), 'utf8'));
