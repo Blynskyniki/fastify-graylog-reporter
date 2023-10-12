@@ -37,7 +37,19 @@
     "type": "git",
     "url": "https://github.com/Blynskyniki/fastify-graylog-reporter.git"
   },
+  "bugs": {
+    "url": "https://github.com/Blynskyniki/fastify-graylog-reporter/issues"
+  },
   "author": "BlynskyNiki <blynskyniki@gmail.com>",
+  "contributors": [
+    {
+      "name": "Blynskyniki",
+      "url": "https://github.com/Blynskyniki"
+    },
+    {
+      "name": "Alexandrmrk",
+      "url": "https://github.com/Alexandrmrk"
+    }],
   "license": "MIT",
   "dependencies": {
     "dgram": "^1.0.1",
