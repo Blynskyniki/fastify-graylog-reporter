@@ -1,22 +1,35 @@
 import { FastifyPluginCallback } from 'fastify';
 import fp from 'fastify-plugin';
-import { Gelf, GelfMessage } from './Gelf';
+import { ClientConnectionOptions, GrayLogGelfReporter } from './Gelf';
 
-const plugin: FastifyPluginCallback<{ facility: string; host: string; port?: number }> = function (
+const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
   fastify,
   options,
   done,
 ) {
-  const { facility, port, host } = options;
-  const instance = new Gelf(host, port);
+  const instance = new GrayLogGelfReporter(options);
 
-  fastify.addHook('onResponse', (request, reply, done) => {
+  fastify.addHook('onResponse', async (request, reply) => {
     const { query, params, body, headers, routerMethod, routerPath } = request;
-    instance.sendMessage(
-      GelfMessage.fromJSON(facility, { path: routerPath, method: routerMethod, query, params, body, headers }),
-    );
+    try {
 
-    done();
+      await instance.report({
+        host: headers.location || 'empty',
+        timestamp: +new Date(),
+        short_message: `${routerMethod}:${routerPath} ${JSON.stringify(query || body || {})}`,
+        path: routerPath,
+        method: routerMethod,
+        query,
+        params,
+        body,
+        headers,
+      });
+
+    } catch (err) {
+      console.error(err);
+    }
+
+
   });
   done();
 };

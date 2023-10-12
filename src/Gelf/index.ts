@@ -1,2 +1,3 @@
 export * from './gelfMessage';
-export * from './gelf';
+export * from './grayLogGelfReporter';
+export * from './options';
