@@ -8,21 +8,13 @@ const plugin: FastifyPluginCallback<{ facility: string; host: string; port?: num
   done,
 ) {
   const { facility, port, host } = options;
-
   const instance = new Gelf(host, port);
 
   fastify.addHook('onResponse', (request, reply, done) => {
-    const { query, params, body, headers, method, routerPath } = request;
-    const payload = {
-      request: { query, params, body, headers },
-    };
+    const { query, params, body, headers, routerMethod, routerPath } = request;
     instance.sendMessage(
-      GelfMessage.fromJSON(
-        facility,
-        payload,
-      ),
+      GelfMessage.fromJSON(facility, { path: routerPath, method: routerMethod, query, params, body, headers }),
     );
-
 
     done();
   });
