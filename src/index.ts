@@ -4,7 +4,7 @@ import { ClientConnectionOptions, GrayLogGelfReporter } from './Gelf';
 
 declare module 'fastify' {
   export interface FastifyRequest {
-    credentials?: Record<string, unknown>;
+    credentials?: any;
   }
 }
 const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
