@@ -9,7 +9,7 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
 ) {
   const instance = new GrayLogGelfReporter(options);
 
-  fastify.addHook('onResponse', async (request, reply) => {
+  fastify.addHook('onSend', async (request, reply, response) => {
     const { query, params, body, headers, routerMethod, routerPath } = request;
     try {
 
@@ -23,6 +23,7 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
         uri: request.url,
         params,
         body,
+        response,
         headers,
       });
 
