@@ -3,7 +3,7 @@ import { GELF_MAGIC_BYTES } from './options';
 import { deflateAsync } from './utils';
 import { randomBytes } from 'crypto';
 
-type SerializeOptions = Pick<ConnectionOptions, 'compress' | 'minCompressSize' | 'maxChunkSize'>
+type SerializeOptions = Pick<ConnectionOptions, 'compress' | 'minCompressSize' | 'maxChunkSize' | 'useChunks'>
 
 export class GelfMessageSerializer {
   public readonly options: SerializeOptions;
@@ -13,7 +13,11 @@ export class GelfMessageSerializer {
   }
 
   public async serialize(data: Buffer) {
+
     if (data.length <= this.options.maxChunkSize) {
+      return [data];
+    }
+    if (!this.options?.useChunks) {
       return [data];
     }
 
