@@ -14,11 +14,12 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
     try {
 
       await instance.report({
-        host: headers.location || 'empty',
-        short_message: `${routerMethod}:${routerPath} ${JSON.stringify(query || body || {})}`,
+        host: headers?.['host'] || 'empty',
+        short_message: `${routerMethod}:${routerPath} ${query ? JSON.stringify(query) : ''}${body ? JSON.stringify(body) : ''}`,
         path: routerPath,
         method: routerMethod,
         query,
+        uri: request.url,
         params,
         body,
         headers,
