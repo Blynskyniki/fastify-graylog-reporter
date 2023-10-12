@@ -25,7 +25,7 @@ export type GrayLogReportMessage = {
   host: string;
   short_message: string;
   full_message?: string;
-  timestamp: number;
+  timestamp?: number;
 
   [key: string]: any
 }

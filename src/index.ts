@@ -15,7 +15,6 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
 
       await instance.report({
         host: headers.location || 'empty',
-        timestamp: +(new Date()),
         short_message: `${routerMethod}:${routerPath} ${JSON.stringify(query || body || {})}`,
         path: routerPath,
         method: routerMethod,
