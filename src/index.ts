@@ -14,11 +14,11 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
     try {
 
       await instance.report({
-        host: headers?.['host'] || 'empty',
+        host: headers?.['host'] || headers?.['x-forwarded-for']?.[0] || 'empty',
         short_message: `${routerMethod}:${routerPath} ${params ? 'params:' + JSON.stringify(params) : ''}${query ? 'query:' + JSON.stringify(query) : ''}${body ? 'body:' + JSON.stringify(body) : ''}`,
         path: routerPath,
         method: routerMethod,
-        full_message: `token=${headers['authorization']},host=${headers?.['host']}`,
+        full_message: Object.keys(headers).map(key => `${key}=${headers[key]} `).join('\n'),
         query,
         uri: request.url,
         params,
