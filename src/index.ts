@@ -1,5 +1,6 @@
 import { FastifyPluginCallback } from 'fastify';
 import fp from 'fastify-plugin';
+import { type } from 'os';
 import { ClientConnectionOptions, GrayLogGelfReporter } from './Gelf';
 
 declare module 'fastify' {
@@ -7,7 +8,16 @@ declare module 'fastify' {
     credentials?: any;
   }
 }
-const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
+export type ExcludeKeys =
+  'query'
+  | 'params'
+  | 'body'
+  | 'response'
+  | 'credentials'
+  | 'responseStatusCode'
+  | 'requestHeaders'
+  | 'responseHeaders';
+const plugin: FastifyPluginCallback<ClientConnectionOptions & { excludeFields?: ExcludeKeys[] }> = function (
   fastify,
   options,
   done,
@@ -16,8 +26,9 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
 
   fastify.addHook('onSend', async (request, reply, response) => {
     const { query, params, body, headers, routerMethod, routerPath, credentials } = request;
+
     try {
-      await instance.report({
+      const data = {
         host: headers?.['host'] || headers?.['x-forwarded-for']?.[0] || 'empty',
         short_message: `${routerMethod}:${routerPath} ${params ? 'params:' + JSON.stringify(params) : ''}${query ? 'query:' + JSON.stringify(query) : ''}${body ? 'body:' + JSON.stringify(body) : ''}`,
         path: routerPath,
@@ -29,8 +40,16 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & {}> = function (
         body,
         response,
         credentials,
-        headers,
-      });
+        responseStatusCode: reply.statusCode,
+        requestHeaders: headers,
+        responseHeaders: reply.getHeaders(),
+      };
+      if (options.excludeFields) {
+        options.excludeFields?.forEach(key => {
+          delete data[key];
+        });
+      }
+      await instance.report(data);
 
     } catch (err) {
       console.error(err);

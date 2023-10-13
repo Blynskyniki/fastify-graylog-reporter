@@ -26,6 +26,16 @@ fastify.register(fastifyGrayLogReporter, {
    * stream name
    */
   facility: `API_${process.env.ENVIRONMENT}`,
+  /**
+   * keys for exclude report (type ExcludeKeys[])
+   */
+  excludeFields: [],
+
+  /**
+   * For debug
+   */
+  logs: true,
+
 });
 
 
