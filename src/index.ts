@@ -8,7 +8,7 @@ declare module 'fastify' {
     credentials?: any;
   }
 }
-export type ExcludeKeys =
+export type ExcludedKeys =
   'query'
   | 'params'
   | 'body'
@@ -17,7 +17,7 @@ export type ExcludeKeys =
   | 'responseStatusCode'
   | 'requestHeaders'
   | 'responseHeaders';
-const plugin: FastifyPluginCallback<ClientConnectionOptions & { excludeFields?: ExcludeKeys[] }> = function (
+const plugin: FastifyPluginCallback<ClientConnectionOptions & { excludeFields?: ExcludedKeys[] }> = function (
   fastify,
   options,
   done,

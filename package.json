@@ -29,9 +29,15 @@
   },
   "keywords": [
     "fastify",
+    "fastify plugin",
     "udp",
     "report",
-    "graylog"
+    "gelf",
+    "logging",
+    "log",
+    "report",
+    "graylog",
+    "graylog2"
   ],
   "repository": {
     "type": "git",
@@ -49,7 +55,8 @@
     {
       "name": "Alexandrmrk",
       "url": "https://github.com/Alexandrmrk"
-    }],
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "dgram": "^1.0.1",
