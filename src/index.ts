@@ -24,7 +24,7 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & { excludeFields?: 
 ) {
   const instance = new GrayLogGelfReporter(options);
 
-  fastify.addHook('onSend', async (request, reply, response) => {
+  fastify.addHook('onSend', async (request, reply, payload) => {
     const { query, params, body, headers, routerMethod, routerPath, credentials } = request;
 
     try {
@@ -38,7 +38,7 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & { excludeFields?: 
         uri: request.url,
         params,
         body,
-        response,
+        response: payload,
         credentials,
         responseStatusCode: reply.statusCode,
         requestHeaders: headers,
@@ -53,6 +53,9 @@ const plugin: FastifyPluginCallback<ClientConnectionOptions & { excludeFields?: 
 
     } catch (err) {
       console.error(err);
+      console.error(err.stack);
+    } finally {
+      return payload;
     }
 
 
