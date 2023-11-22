@@ -1,16 +1,19 @@
-import * as dgram from 'dgram';
-
 import { GelfMessageSerializer } from './gelfMessageSerializer';
 import { MAX_CHUNK_SIZE, MIN_COMPRESS_SIZE } from './options';
 import { TransportAbstract } from './Transport/TransportAbstract';
 import { UdpTransport } from './Transport/UdpTransport';
 
+type LoggerLike = {
+  debug: (...args: any[]) => void
+  error: (...args: any[]) => void
+}
 export type ConnectionOptions = {
   facility: string;
   host: string;
   port: number;
   useChunks?: boolean;
   logs?: boolean;
+  Logger?: LoggerLike
   compress: boolean;
   minCompressSize: number;
   maxChunkSize: number;
